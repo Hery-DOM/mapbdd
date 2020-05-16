@@ -114,7 +114,7 @@ html {
 
 .map{
     height: 100vh;
-    position: sticky !important;
+    position: sticky!important;
     top:0;
     left:0;
     right: 0;
@@ -122,6 +122,10 @@ html {
 
 .map p{
 
+}
+
+.marker.is-active{
+    background-color: red;
 }
 
 /*

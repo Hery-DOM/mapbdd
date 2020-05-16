@@ -77,6 +77,7 @@
                         {% endfor %}
                     {% endfor %}#}
 
+                    {% set count = 0 %}
                     {% for category in result %}
                         <br>
                         <div style="color:#15A595;">
@@ -87,13 +88,15 @@
                                     {{ subCategory.name}}
                                 </div>
                                     {% for actor in subCategory.actor  %}
-                                        <div id='position' data-latitude={{ actor.latitude }}, data-longitude={{ actor.longitude }}>
+                                        <div class='position{{ count }}' data-latitude='{{ actor.latitude }}' data-longitude='{{ actor.longitude }}'>
                                             {#{{ dump(actor) }}#}
                                             {{actor.name}}
                                         </div>
+                                        {% set count = count+1 %}
                                     {% endfor %}
                             {% endfor %}
                     {% endfor %}
+                    <div id="count" data-count='{{ count }}' ></div>
                    {# {{dump(result[0])}}#}
 
                 </table>
