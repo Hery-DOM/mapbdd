@@ -62,11 +62,11 @@
                 </form>
 
                 {% if center is empty %}
-                    <div id="mapCenter" data-latitude='' data-longitude=''>
+                <div id="mapCenter" data-latitude='' data-longitude=''> </div>
                 {% else %}
-                    <div id="mapCenter" data-latitude='{{ center[0] }}' data-longitude='{{ center[1] }}'>
+                    <div id="mapCenter" data-latitude='{{ center[0] }}' data-longitude='{{ center[1] }}'></div>
                 {% endif %}
-                </div>
+
 
                 <table>
                     {% set count = 0 %}
@@ -88,6 +88,7 @@
                                     {% endfor %}
                             {% endfor %}
                     {% endfor %}
+
                     <div id="count" data-count='{{ count }}' ></div>
                    {# {{dump(result[0])}}#}
                 </table>

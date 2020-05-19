@@ -174,20 +174,6 @@ if (latitudeM == '' && longitudeM == ''){
     longitudeM=2
     zoom=6.5
 }
-/*
----------------------------------------------------------------let hery*/
-/*let city = document.getElementById('city')
-
-let latitude = city.dataset.latitude
-let longitude = city.dataset.longitude
-
-let latitude2 = parseFloat(latitude) + 0.1
-let longitude2 = parseFloat(longitude)+0.1
-
-let latitudeM = (parseFloat(latitude)+parseFloat(latitude2))/2
-let longitudeM = (parseFloat(longitude)+parseFloat(longitude2))/2*/
-/*
----------------------------------------------------------------let hery*/
 
 for (var i=0; i<count; i++){
     let latitude = $('.position'+i).data ('latitude')
@@ -227,6 +213,7 @@ class LeafletMap {
     }
 
     addMarker (lat, lng, text){
+
         let point = [lat, lng]
         this.bounds.push(point)
         return new LeafletMarker(point, text, this.map)
@@ -240,7 +227,7 @@ class LeafletMap {
 
 class LeafletMarker {
     constructor (point, text, map) {
-        this.text = text()
+        this.text = text
         this.popup = L.popup({
             autoClose: false,
             closeOnEscapeKey: false,
@@ -250,7 +237,7 @@ class LeafletMarker {
             maxWidth: 400
         })
 
-            .setLatLng([point])
+            .setLatLng([parseFloat(point[0]),parseFloat(point[1])])
             .setContent (text)
             .openOn(map)
     }
@@ -288,13 +275,10 @@ const initMap = async function () {
     let activeMarker = null
     await map.load($map)
 
-    /*Array.from(document.querySelectorAll('.js-marker')).forEach((item) =>{
-        let marker = map.addMarker(item.dataset.lat, item.dataset.lng, item.dataset.price + '€')
-    })*/
-
     for (var [key,value] of Object.entries(actor)){
         console.log(value)
-        let marker = map.addMarker(value[0], value[1], 'text')
+        let marker = map.addMarker(parseFloat(value[0]),parseFloat(value[1]), 'text')
+
         marker.addEventListener('mouseover',function (){
             if (hoverMarker !== null){
                 hoverMarker.unsetActive()
@@ -312,12 +296,13 @@ const initMap = async function () {
             if (activeMarker !== null){
                 activeMarker.resetContent()
             }
-            marker.setContent(item.innerHTML)
+            marker.setContent(marker.innerHTML)
             activeMarker = marker
         })
+
+        activeMarker = marker
     }
 
-   /* map.center()*/
 }
 
 if ($map !== null){
