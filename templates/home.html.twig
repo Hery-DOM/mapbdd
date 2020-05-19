@@ -55,28 +55,12 @@
     <div class="container">
         <div class="list">
             <div class="item js-marker" {#{{ data.longitude }} {{ data.latitude }}#}>
+                <form>
+                    <input type="text" name="city">
+                    <label for="">Ville</label>
+                    <button type="submit" name="city-submit"></button>
+                </form>
                 <table>
-
-                        {#<tr class="bg_item">
-                            <td>name</td>
-                            <td>adresse</td>
-                            <td>ville</td>
-                        </tr>#}
-
-                    {#{% for category in result %}
-                        {{ dump(result) }}
-                        {{ dump(category) }}
-                        <div class="bg_item">
-                            {{ category.name }}
-                        </div>
-                        {% for subCategory in result%}
-                            #}{#{{subCategory('subCategory', {'id':subCategory.id}).name}}#}{#
-                            #}{#{{'subCategory'().name}}#}{#
-                            #}{#{{ subCategory['name'] }}#}{#
-                            #}{#[i=0 , i++]#}{#
-                        {% endfor %}
-                    {% endfor %}#}
-
                     {% set count = 0 %}
                     {% for category in result %}
                         <br>
@@ -98,37 +82,10 @@
                     {% endfor %}
                     <div id="count" data-count='{{ count }}' ></div>
                    {# {{dump(result[0])}}#}
+                </table>
 
-                </table>
             </div>
-            {#<div class="item js-marker">
-                <table>
-                    <tr class="bg_item">
-                        <td>name</td>
-                        <td>adresse</td>
-                        <td>ville</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="item js-marker">
-                <table>
-                    <tr class="bg_item">
-                        <td>name</td>
-                        <td>adresse</td>
-                        <td>ville</td>
-                    </tr>
 
-                </table>
-            </div>
-            <div class="item js-marker">
-                <table>
-                    <tr class="bg_item">
-                        <td>name</td>
-                        <td>adresse</td>
-                        <td>ville</td>
-                    </tr>
-                </table>
-            </div>#}
         </div>
 
         <div class="map" id="map">
