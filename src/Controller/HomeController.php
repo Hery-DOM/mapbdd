@@ -25,6 +25,16 @@ class HomeController extends AbstractController
         $categories = $categoryRepository->findAll();
         $result = $categories;
 
+        // get the city by form
+        if(isset($_POST['city-submit'])){
+
+            $ville = str_replace(' ','+',$_POST['city']);
+
+            return $this->redirectToRoute('home_ville',[
+                'ville' => $ville
+            ]);
+        }
+
         // get the center
         if($ville === 'null'){
             $center = [];
