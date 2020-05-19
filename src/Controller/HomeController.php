@@ -17,12 +17,27 @@ class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="home")
+     * @Route("/{ville}", name="home_ville")
      */
-    public function home(CategoryRepository $categoryRepository)
+    public function home($ville="null", CategoryRepository $categoryRepository)
     {
         // get every categories
         $categories = $categoryRepository->findAll();
         $result = $categories;
+
+        // get the center
+        if($ville === 'null'){
+            $center = [];
+        }else{
+            $adress = str_replace(' ','+',$ville);
+            $geocoder = "https://api-adresse.data.gouv.fr/search/?q=".$adress;
+
+            $decode = json_decode(file_get_contents($geocoder));
+
+            $local_latitude = $decode->features[0]->geometry->coordinates[1];
+            $local_longitude = $decode->features[0]->geometry->coordinates[0];
+            $center = [$local_latitude, $local_longitude];
+        }
 
 
 
