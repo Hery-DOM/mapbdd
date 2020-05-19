@@ -55,11 +55,19 @@
     <div class="container">
         <div class="list">
             <div class="item js-marker" {#{{ data.longitude }} {{ data.latitude }}#}>
-                <form>
+                <form action="{{ path('home') }}" method="POST">
                     <input type="text" name="city">
                     <label for="">Ville</label>
-                    <button type="submit" name="city-submit"></button>
+                    <button type="submit" name="city-submit">valider</button>
                 </form>
+
+                {% if center is empty %}
+                    <div id="mapCenter" data-latitude='' data-longitude=''>
+                {% else %}
+                    <div id="mapCenter" data-latitude='{{ center[0] }}' data-longitude='{{ center[1] }}'>
+                {% endif %}
+                </div>
+
                 <table>
                     {% set count = 0 %}
                     {% for category in result %}

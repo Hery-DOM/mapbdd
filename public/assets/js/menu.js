@@ -166,6 +166,14 @@ if ($map !== null){
 let actor={}
 let count= $('#count').data ('count')
 
+var latitudeM= $('#mapCenter').data('latitude')
+var longitudeM= $('#mapCenter').data('longitude')
+var zoom=15
+if (latitudeM == '' && longitudeM == ''){
+    latitudeM=46
+    longitudeM=2
+    zoom=6.5
+}
 /*
 ---------------------------------------------------------------let hery*/
 /*let city = document.getElementById('city')
@@ -204,11 +212,11 @@ class LeafletMap {
 
             $script('https://unpkg.com/leaflet@1.6.0/dist/leaflet.js', () =>{
 
-                this.map = L.map(element, {scrollWheelZoom: false}) .setView([latitudeM, longitudeM], 10)
+                this.map = L.map(element, {scrollWheelZoom: false}) .setView([latitudeM, longitudeM], zoom)
 
                 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                    maxZoom: 18,
+                    maxZoom: 20,
                     id: 'mapbox/streets-v11',
                     accessToken: 'pk.eyJ1IjoiYWxleGFuZHJhLWRpYXMtZGEtcm9jaGEiLCJhIjoiY2thNzdlMzV6MDBjaDJ6bWs0MjZnN3UzcCJ9.kQDDU5mD4ec75jMVoNPmGQ',
 
@@ -287,7 +295,7 @@ const initMap = async function () {
     for (var [key,value] of Object.entries(actor)){
         console.log(value)
         let marker = map.addMarker(value[0], value[1], 'text')
-        item.addEventListener('mouseover',function (){
+        marker.addEventListener('mouseover',function (){
             if (hoverMarker !== null){
                 hoverMarker.unsetActive()
             }
@@ -295,7 +303,7 @@ const initMap = async function () {
             hoverMarker = marker
         })
 
-        item.addEventListener('mouseleave', function () {
+        marker.addEventListener('mouseleave', function () {
             if (hoverMarker !== null){
                 hoverMarker.unsetActive()
             }
@@ -309,7 +317,7 @@ const initMap = async function () {
         })
     }
 
-    map.center()
+   /* map.center()*/
 }
 
 if ($map !== null){
