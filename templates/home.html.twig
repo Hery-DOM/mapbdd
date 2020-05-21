@@ -73,14 +73,18 @@
                     {% for category in result %}
                         <br>
                         <div style="color:#15A595;">
-                            {{ category.name }}
+                            <label for="map_checkbox">{{ category.name }}</label>
+                            <input type="checkbox" class="map_checkbox" name="map_checkbox" checked>
                         </div>
                             {% for subCategory in category.subCategory %}
                                 <div style="color:#ED721D;">
-                                    {{ subCategory.name}}
+                                    <label for="map_checkbox">{{ subCategory.name}}</label>
+                                    <input type="checkbox" class="map_checkbox" name="map_checkbox" checked>
                                 </div>
                                     {% for actor in subCategory.actor  %}
-                                        <div class='position{{ count }}' data-latitude='{{ actor.latitude }}' data-longitude='{{ actor.longitude }}'>
+                                        <div class='position{{ count }}' data-latitude='{{ actor.latitude }}' data-longitude='{{ actor.longitude }}'
+                                            data-name='{{ actor.name }}' data-description='{{ actor.description }}'>
+
                                             {#{{ dump(actor) }}#}
                                             {{actor.name}}
                                         </div>

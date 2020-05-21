@@ -176,9 +176,11 @@ if (latitudeM == '' && longitudeM == ''){
 }
 
 for (var i=0; i<count; i++){
+    let name=$('.position'+i).data('name')
+    let description=$('.position'+i).data('description')
     let latitude = $('.position'+i).data ('latitude')
     let longitude = $ ('.position'+i).data ('longitude')
-    actor['position'+i] = [latitude,longitude]
+    actor['position'+i] = [latitude,longitude,name,description]
 }
 
 
@@ -275,9 +277,14 @@ const initMap = async function () {
     let activeMarker = null
     await map.load($map)
 
+    /*var bounds = map.getBounds()*/
+    console.log(map)
+
     for (var [key,value] of Object.entries(actor)){
-        console.log(value)
-        let marker = map.addMarker(parseFloat(value[0]),parseFloat(value[1]), 'text')
+        /*console.log(value)*/
+        /*let text = '<div><h3>'+value[2]+'</h3>'
+        text+='<p class="description">'+value[3]+'</p> </div>'*/
+        let marker = map.addMarker(parseFloat(value[0]),parseFloat(value[1]), text)
 
         marker.addEventListener('mouseover',function (){
             if (hoverMarker !== null){
@@ -308,6 +315,20 @@ const initMap = async function () {
 if ($map !== null){
     initMap()
 }
+
+/*---------------------------------------- CHECKBOX*/
+$(document).ready(function(){
+    $('.map_checkbox').click(function(){
+        console.log('test')
+    });
+});
+
+
+$(document).ready(function(){
+
+});
+
+
 /*
 ---------------------------------------------------------------test 2 mapbox END*/
 
