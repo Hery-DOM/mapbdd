@@ -191,7 +191,6 @@ class LeafletMap {
     constructor() {
         this.map = null
         this.bounds = []
-
     }
 
 
@@ -201,10 +200,15 @@ class LeafletMap {
             $script('https://unpkg.com/leaflet@1.6.0/dist/leaflet.js', () =>{
 
                 this.map = L.map(element, {scrollWheelZoom: false}) .setView([latitudeM, longitudeM], zoom)
+                this.bounds.push([latitudeM,longitudeM])
+                /*this.map.on ('dragend', function(){
+                    /!*console.log('test')*!/
+                    /!*markers.clearLayers()*!/ /!*marker is not defined*!//!* clear a tester ici*!/
+                })*/
 
                 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                    maxZoom: 20,
+                    maxZoom: 18,
                     id: 'mapbox/streets-v11',
                     accessToken: 'pk.eyJ1IjoiYWxleGFuZHJhLWRpYXMtZGEtcm9jaGEiLCJhIjoiY2thNzdlMzV6MDBjaDJ6bWs0MjZnN3UzcCJ9.kQDDU5mD4ec75jMVoNPmGQ',
 
@@ -217,12 +221,31 @@ class LeafletMap {
     addMarker (lat, lng, text){
 
         let point = [lat, lng]
-        this.bounds.push(point)
+        /*this.bounds.push(point)*/
         return new LeafletMarker(point, text, this.map)
     }
 
-    center (){
+    drag(){
+        this.map.on('dragend', function () {
+            console.log('test')
+        })
+    }
+
+    /*remove(layer){
+        clearMarkers(layer)
+        /!*var group = new L.LayerGroup()
+        group.addLayer(layer)
+        group.removeLayer(layer)*!/
+    }*/
+
+   center (){
         this.map.fitBounds(this.bounds)
+        this.map.setZoom(15)
+       if (latitudeM == '' && longitudeM == ''){
+           this.map.setZoom(6.5)
+       } else {
+           this.map.setZoom(15)
+       }
     }
 
 }
@@ -275,16 +298,24 @@ const initMap = async function () {
     let map = new LeafletMap()
     let hoverMarker = null
     let activeMarker = null
+
     await map.load($map)
 
-    /*var bounds = map.getBounds()*/
-    console.log(map)
+    /*map.on ('dragend', function(){
+        console.log('test')
+    })*/ /*Is not a function -> aucun marker visible*/
+
+    /*tester le map.on en enlevant le this reprendre le test du haut en le mettant en commentaire*/
+
 
     for (var [key,value] of Object.entries(actor)){
-        /*console.log(value)*/
-        /*let text = '<div><h3>'+value[2]+'</h3>'
-        text+='<p class="description">'+value[3]+'</p> </div>'*/
-        let marker = map.addMarker(parseFloat(value[0]),parseFloat(value[1]), text)
+
+        let text = '<div><h3>'+value[2]+'</h3>'
+        text+='<p class="description">'+value[3]+'</p> </div>'
+        var marker = map.addMarker(parseFloat(value[0]),parseFloat(value[1]), text, {draggable:true})
+        /*map.remove(marker)*/
+        marker.resetContent()
+
 
         marker.addEventListener('mouseover',function (){
             if (hoverMarker !== null){
@@ -308,13 +339,74 @@ const initMap = async function () {
         })
 
         activeMarker = marker
+
     }
+    map.center()
+    map.drag()
 
 }
+
+
 
 if ($map !== null){
     initMap()
 }
+/*---------------------------------------*/
+
+/*marker.on('dragend', function (e) {
+    document.getElementById('latitude').value = marker.getLatLng().lat;
+    document.getElementById('longitude').value = marker.getLatLng().lng;
+});*/
+/*onInit() {
+    this.marker.on('dragend', () => {
+    });
+}*/
+
+/*---------------------------------------*/
+
+// Event Handlers A TESTER
+/*map.on('click', function(e){
+    var marker = new L.Marker(e.latlng, {draggable:true});
+    marker.bindPopup("<strong>"+e.target._latlng+"</strong>").addTo(map);
+
+    marker.on('dragend', markerDrag);
+});
+
+map.on('dragend', function(e){
+    alert("map drag end")
+});*/
+
+/*---------------------------------------*/
+
+/*var osmUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+    osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    osm = L.tileLayer(osmUrl, {
+        maxZoom: 18,
+        attribution: osmAttrib
+    });
+var map = L.map('map').setView([19.04469, 72.9258], 12).addLayer(osm);
+
+function onMapClick(e) {
+    var marker = L.marker(e.latlng, {
+        draggable: true,
+        title: "Resource location",
+        alt: "Resource Location",
+        riseOnHover: true
+    }).addTo(map)
+        .bindPopup(e.latlng.toString()).openPopup();
+    marker.on("dragend", function(ev) {
+        var chagedPos = ev.target.getLatLng();
+        this.bindPopup(chagedPos.toString()).openPopup();
+    });
+}
+map.on('click', onMapClick);*/
+
+/*---------------------------------------*/
+
+/*marker.on('dragend', function(event) {
+    var latlng = event.target.getLatLng();
+    console.log(latlng.lat, latlng.lng)
+});*/
 
 /*---------------------------------------- CHECKBOX*/
 $(document).ready(function(){
