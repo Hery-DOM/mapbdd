@@ -101,6 +101,18 @@ class HomeController extends AbstractController
     public function ajax()
     {
         // ajax + return a JSON
+        // get the lat and long from center view
+
+        //get the selector
+        $selector = [];
+
+
+
+
+
+
+
+
     }
 
 }

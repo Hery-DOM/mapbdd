@@ -226,6 +226,12 @@ class LeafletMap {
     }
 
     drag(){
+        var group = document.getElementsByClassName('marker')
+
+        for(var h=0; h<group.length; h++){
+            group[h].removeChild()
+            console.log(group[h])
+        }
         this.map.on('dragend', function () {
             console.log('test')
         })
