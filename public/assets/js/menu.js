@@ -221,17 +221,7 @@ class LeafletMap {
         return new LeafletMarker(point, text, this.map)
     }
 
-    drag(){
-        this.map.on('dragend', function () {
-            var group = document.getElementsByClassName('marker')
 
-            while(group.length > 0){
-                for(let item of group){
-                    item.remove()
-                }
-            }
-        })
-    }
 
     remove(){
         var group =  document.getElementsByClassName('marker')
@@ -250,6 +240,38 @@ class LeafletMap {
        } else {
            this.map.setZoom(15)
        }
+    }
+
+    drag(map){
+        this.map.on('dragend', function () {
+            var group = document.getElementsByClassName('marker')
+            while(group.length > 0){
+                for(let item of group){
+                    item.remove()
+                }
+            }
+
+            var center = map.getCenter()
+
+            $.ajax({
+                url:$('#url_ajax').data('path'),
+                type:'POST',
+                data:{
+                    center: center
+                },
+                dataType: 'JSON',
+                success: function (result) {
+                    console.log(result)
+                }
+            })
+        })
+    }
+
+    getCenter() {
+        var result = []
+        result.push(this.map.getCenter().lat)
+        result.push(this.map.getCenter().lng)
+        return result
     }
 
 }
@@ -338,7 +360,7 @@ const initMap = async function () {
 
     }
     map.center()
-    map.drag()
+    map.drag(map)
     map.remove()
 }
 
