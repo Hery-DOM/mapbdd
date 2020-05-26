@@ -10,14 +10,16 @@ use App\Repository\CategoryRepository;
 use App\Repository\SubCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="home")
-     * @Route("/{ville}", name="home_ville")
+     * @Route("/ville/{ville}", name="home_ville")
      */
     public function home($ville="null", CategoryRepository $categoryRepository)
     {
@@ -98,9 +100,45 @@ class HomeController extends AbstractController
     /**
      * @Route("/ajax", name="ajax")
      */
-    public function ajax()
+    public function ajax(CategoryRepository $categoryRepository)
     {
         // ajax + return a JSON
+        // get the lat and long from center view
+        $center = $_POST['center'];
+        $latMax = $center[0]+0.01;
+        $latMin = $center[0]-0.01;
+        $lngMax = $center[1]+0.01;
+        $lngMin = $center[1]-0.01;
+        $result = [];
+
+        // every catgories
+        $categories = $categoryRepository->findAll();
+        foreach($categories as $category){
+            foreach($category->getSubCategory() as $subCategories){
+                foreach($subCategories->getActor() as $actor){
+                    if($actor->getLatitude() < $latMax && $actor->getLatitude()> $latMin){
+                        if($actor->getLongitude()<$lngMax && $actor->getLongitude()>$lngMin){
+                            $result[] = $actor;
+                        }
+
+                    }
+                }
+            }
+        }
+
+        //get the selector
+        //$selector = [];
+
+
+        return new Response(json_encode($result));
+
+
+
+
+
+
+
+
     }
 
 }
