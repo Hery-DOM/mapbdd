@@ -221,13 +221,7 @@ class LeafletMap {
         return new LeafletMarker(point, text, this.map)
     }
 
-    drag(){
-        var group = document.getElementsByClassName('marker')
-
-        for(var h=0; h<group.length; h++){
-            group[h].removeChild()
-            console.log(group[h])
-        }
+    drag(map){
         this.map.on('dragend', function () {
             var group = document.getElementsByClassName('marker')
 
@@ -236,6 +230,8 @@ class LeafletMap {
                     item.remove()
                 }
             }
+
+            map.getCenter()
         })
     }
 
@@ -258,6 +254,9 @@ class LeafletMap {
        }
     }
 
+    getCenter() {
+        console.log(this.map.getCenter().lng)
+    }
 }
 
 class LeafletMarker {
@@ -344,7 +343,7 @@ const initMap = async function () {
 
     }
     map.center()
-    map.drag()
+    map.drag(map)
     map.remove()
 }
 
