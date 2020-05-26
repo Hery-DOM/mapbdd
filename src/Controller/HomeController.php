@@ -105,10 +105,10 @@ class HomeController extends AbstractController
         // ajax + return a JSON
         // get the lat and long from center view
         $center = $_POST['center'];
-        $latMax = $center[0]+0.01;
-        $latMin = $center[0]-0.01;
-        $lngMax = $center[1]+0.01;
-        $lngMin = $center[1]-0.01;
+        $latMax = $center[0]+0.1;
+        $latMin = $center[0]-0.1;
+        $lngMax = $center[1]+0.1;
+        $lngMin = $center[1]-0.1;
         $result = [];
 
         // every catgories
