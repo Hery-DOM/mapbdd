@@ -268,7 +268,9 @@ class LeafletMap {
                 },
                 dataType: 'JSON',
                 success: function (result) {
-                    console.log(result)
+                    for(let item of Object.entries(result)){
+                        console.log(item)
+                    }
                 }
             })
         })
