@@ -225,7 +225,7 @@ class LeafletMap {
 
     remove(){
         var group =  document.getElementsByClassName('marker')
-        console.log(group)
+        /*console.log(group)*/
         for (var i=0; i<group.length ;i++){
 
             group[i].remove()
@@ -245,7 +245,7 @@ class LeafletMap {
     click()
     {
         this.map.on('click',function(){
-            console.log(map.latlng)
+            /*console.log(map.latlng)*/
         })
     }
 
@@ -268,8 +268,10 @@ class LeafletMap {
                 },
                 dataType: 'JSON',
                 success: function (result) {
-                    for(let item of Object.entries(result)){
-                        console.log(item)
+                    for(let [key,item] of Object.entries(result)){
+                        let text = '<div><h3>'+key+'</h3>'
+                        text+='<p class="description">'+item[2]+'</p> </div>'
+                        map.addMarker(parseFloat(item[0]), parseFloat(item[1]), text)
                     }
                 }
             })
@@ -379,99 +381,54 @@ const initMap = async function () {
 if ($map !== null){
     initMap()
 }
-/*---------------------------------------*/
-
-/*marker.on('dragend', function (e) {
-    document.getElementById('latitude').value = marker.getLatLng().lat;
-    document.getElementById('longitude').value = marker.getLatLng().lng;
-});*/
-/*onInit() {
-    this.marker.on('dragend', () => {
-    });
-}*/
-
-/*---------------------------------------*/
-
-// Event Handlers A TESTER
-/*map.on('click', function(e){
-    var marker = new L.Marker(e.latlng, {draggable:true});
-    marker.bindPopup("<strong>"+e.target._latlng+"</strong>").addTo(map);
-
-    marker.on('dragend', markerDrag);
-});
-
-map.on('dragend', function(e){
-    alert("map drag end")
-});*/
-
-/*---------------------------------------*/
-
-/*var osmUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-    osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    osm = L.tileLayer(osmUrl, {
-        maxZoom: 18,
-        attribution: osmAttrib
-    });
-var map = L.map('map').setView([19.04469, 72.9258], 12).addLayer(osm);
-
-function onMapClick(e) {
-    var marker = L.marker(e.latlng, {
-        draggable: true,
-        title: "Resource location",
-        alt: "Resource Location",
-        riseOnHover: true
-    }).addTo(map)
-        .bindPopup(e.latlng.toString()).openPopup();
-    marker.on("dragend", function(ev) {
-        var chagedPos = ev.target.getLatLng();
-        this.bindPopup(chagedPos.toString()).openPopup();
-    });
-}
-map.on('click', onMapClick);*/
-
-/*---------------------------------------*/
-
-/*marker.on('dragend', function(event) {
-    var latlng = event.target.getLatLng();
-    console.log(latlng.lat, latlng.lng)
-});*/
 
 /*---------------------------------------- CHECKBOX*/
-$(document).ready(function(){
-    $('.map_checkbox').click(function(){
+/*$(document).ready(function(){
+    $('.map_checkbox').blur(function(){
         console.log('test')
+    });
+});*/
+
+/*$(document).ready(function(){
+   $('.map_checkbox_category').change(function(){
+
+       if ('.map_checkbox_category' == true){
+           console.log('test Category')
+       }
+    });
+
+    $('.map_checkbox_subCategory').change(function(){
+
+        if ('.map_checkbox_subCategory' == true){
+            console.log('test subCategory')
+        }
+    });
+
+});*/
+
+$(document).ready(function(){
+    $('.map_checkbox_category').change(function(){
+        console.log('test Category')
     });
 });
 
-
 $(document).ready(function(){
-
+    $('.map_checkbox_subCategory').change(function(){
+        console.log('test subCategory')
+    });
 });
 
-
-/*
----------------------------------------------------------------test 2 mapbox END*/
-
-/*Array.from(document.querySelectorAll('.js-marker')).forEach((item) =>{
-       let marker = map.addMarker(item.dataset.lat, item.dataset.lng, item.dataset.price + '€')
-   })*/
+/*$(document).ready(function(){
+    $('.map_checkbox').change(function(){
+        console.log('test')
+    });
+});*/
 
 
-/*
-var map = L.map('map').setView([44.502, -0.344], 13);
+/*var $checkboxCategory = document.getElementsByClassName('map_checkbox_category')
 
-
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    /!*tileSize: 512,
-    zoomOffset: -1,*!/
-    accessToken: 'pk.eyJ1IjoiYWxleGFuZHJhLWRpYXMtZGEtcm9jaGEiLCJhIjoiY2thNzdlMzV6MDBjaDJ6bWs0MjZnN3UzcCJ9.kQDDU5mD4ec75jMVoNPmGQ',
-
-}).addTo(map);
-
-L.popup()
-    .setLatLng([44.502, -0.344])
-    .setContent('<p>Hello world!<br />This is a nice popup.</p>')
-    .openOn(map);*/
+$(document).ready(function(){
+    $('.map_checkbox').change(function(){
+        console.log('test')
+    });
+});*/
