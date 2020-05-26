@@ -54,7 +54,7 @@
         <h1>Annuaire</h1>
     </div>
     <div class="container">
-        {#<span id="url_ajax" data-path="{{ path('ajax') }}"></span>#}
+        <span id="url_ajax" data-path="{{ path('ajax') }}"></span>
         <div class="list">
             <div class="item js-marker" {#{{ data.longitude }} {{ data.latitude }}#}>
                 <form action="{{ path('home') }}" method="POST">
