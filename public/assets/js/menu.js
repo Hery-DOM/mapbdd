@@ -242,6 +242,13 @@ class LeafletMap {
        }
     }
 
+    click()
+    {
+        this.map.on('click',function(){
+            console.log(map.latlng)
+        })
+    }
+
     drag(map){
         this.map.on('dragend', function () {
             var group = document.getElementsByClassName('marker')
@@ -362,6 +369,7 @@ const initMap = async function () {
     map.center()
     map.drag(map)
     map.remove()
+    map.click()
 }
 
 
