@@ -201,10 +201,6 @@ class LeafletMap {
 
                 this.map = L.map(element, {scrollWheelZoom: false}) .setView([latitudeM, longitudeM], zoom)
                 this.bounds.push([latitudeM,longitudeM])
-                /*this.map.on ('dragend', function(){
-                    /!*console.log('test')*!/
-                    /!*markers.clearLayers()*!/ /!*marker is not defined*!//!* clear a tester ici*!/
-                })*/
 
                 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -233,16 +229,24 @@ class LeafletMap {
             console.log(group[h])
         }
         this.map.on('dragend', function () {
-            console.log('test')
+            var group = document.getElementsByClassName('marker')
+
+            while(group.length > 0){
+                for(let item of group){
+                    item.remove()
+                }
+            }
         })
     }
 
-    /*remove(layer){
-        clearMarkers(layer)
-        /!*var group = new L.LayerGroup()
-        group.addLayer(layer)
-        group.removeLayer(layer)*!/
-    }*/
+    remove(){
+        var group =  document.getElementsByClassName('marker')
+        console.log(group)
+        for (var i=0; i<group.length ;i++){
+
+            group[i].remove()
+        }
+    }
 
    center (){
         this.map.fitBounds(this.bounds)
@@ -307,20 +311,12 @@ const initMap = async function () {
 
     await map.load($map)
 
-    /*map.on ('dragend', function(){
-        console.log('test')
-    })*/ /*Is not a function -> aucun marker visible*/
-
-    /*tester le map.on en enlevant le this reprendre le test du haut en le mettant en commentaire*/
-
 
     for (var [key,value] of Object.entries(actor)){
 
         let text = '<div><h3>'+value[2]+'</h3>'
         text+='<p class="description">'+value[3]+'</p> </div>'
         var marker = map.addMarker(parseFloat(value[0]),parseFloat(value[1]), text, {draggable:true})
-        /*map.remove(marker)*/
-        marker.resetContent()
 
 
         marker.addEventListener('mouseover',function (){
@@ -349,7 +345,7 @@ const initMap = async function () {
     }
     map.center()
     map.drag()
-
+    map.remove()
 }
 
 
