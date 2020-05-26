@@ -118,7 +118,8 @@ class HomeController extends AbstractController
                 foreach($subCategories->getActor() as $actor){
                     if($actor->getLatitude() < $latMax && $actor->getLatitude()> $latMin){
                         if($actor->getLongitude()<$lngMax && $actor->getLongitude()>$lngMin){
-                            $result[] = $actor;
+                            $result[$actor->getName()] = [$actor->getLatitude(), $actor->getLongitude(),
+                                $actor->getDescription()];
                         }
 
                     }
