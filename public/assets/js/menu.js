@@ -251,8 +251,25 @@ class LeafletMap {
 
     selectCategory (map){
         $('.map_checkbox').change(function(){
+            var targetName = $(this).data('target')
+            var target = $('.'+targetName)
+
+
+            for (let item of target){
+                var check = $(this).prop('checked')
+                if (check){
+                    item.checked = true
+                } else{
+                    item.checked = false
+                }
+            }
+
+
+
             var $checkboxCategory = document.getElementsByClassName('map_checkbox_category')
             var $checkboxSubCategory = document.getElementsByClassName('map_checkbox_subCategory')
+
+
 
             var ajaxCategory = []
 
@@ -270,6 +287,7 @@ class LeafletMap {
                     ajaxSubCategory.push($(item).data('subcategory'))
                 }
             }
+            console.log(ajaxSubCategory)
 
             $.ajax({
                 url:$('#url_ajax').data('path'),
