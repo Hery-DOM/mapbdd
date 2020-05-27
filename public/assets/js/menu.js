@@ -249,6 +249,47 @@ class LeafletMap {
         })
     }
 
+    selectCategory (map){
+        $('.map_checkbox').change(function(){
+            var $checkboxCategory = document.getElementsByClassName('map_checkbox_category')
+            var $checkboxSubCategory = document.getElementsByClassName('map_checkbox_subCategory')
+
+            var ajaxCategory = []
+
+            for (let item of $checkboxCategory){
+
+                if (item.checked == true){
+                    ajaxCategory.push($(item).data('category'))
+                }
+            }
+
+            var ajaxSubCategory = []
+
+            for (let item of $checkboxSubCategory){
+                if (item.checked == true){
+                    ajaxSubCategory.push($(item).data('subcategory'))
+                }
+            }
+
+            $.ajax({
+                url:$('#url_ajax').data('path'),
+                type:'POST',
+                data:{
+                    ajaxcategory: ajaxCategory,
+                    ajaxsubcategory: ajaxSubCategory
+                },
+                dataType: 'JSON',
+                success: function (result) {
+                    for(let [key,item] of Object.entries(result)){
+                        let text = '<div><h3>'+key+'</h3>'
+                        text+='<p class="description">'+item[2]+'</p> </div>'
+                        map.addMarker(parseFloat(item[0]), parseFloat(item[1]), text)
+                    }
+                }
+            })
+        });
+    }
+
     drag(map){
         this.map.on('dragend', function () {
             var group = document.getElementsByClassName('marker')
@@ -374,6 +415,7 @@ const initMap = async function () {
     map.drag(map)
     map.remove()
     map.click()
+    map.selectCategory(map)
 }
 
 
@@ -383,30 +425,8 @@ if ($map !== null){
 }
 
 /*---------------------------------------- CHECKBOX*/
-/*$(document).ready(function(){
-    $('.map_checkbox').blur(function(){
-        console.log('test')
-    });
-});*/
 
 /*$(document).ready(function(){
-   $('.map_checkbox_category').change(function(){
-
-       if ('.map_checkbox_category' == true){
-           console.log('test Category')
-       }
-    });
-
-    $('.map_checkbox_subCategory').change(function(){
-
-        if ('.map_checkbox_subCategory' == true){
-            console.log('test subCategory')
-        }
-    });
-
-});*/
-
-$(document).ready(function(){
     $('.map_checkbox_category').change(function(){
         console.log('test Category')
     });
@@ -416,19 +436,30 @@ $(document).ready(function(){
     $('.map_checkbox_subCategory').change(function(){
         console.log('test subCategory')
     });
-});
-
-/*$(document).ready(function(){
-    $('.map_checkbox').change(function(){
-        console.log('test')
-    });
 });*/
 
 
-/*var $checkboxCategory = document.getElementsByClassName('map_checkbox_category')
-
-$(document).ready(function(){
+/*$(document).ready(function(){
     $('.map_checkbox').change(function(){
-        console.log('test')
+        var $checkboxCategory = document.getElementsByClassName('map_checkbox_category')
+        var $checkboxSubCategory = document.getElementsByClassName('map_checkbox_subCategory')
+
+        var ajaxCategory = []
+
+        for (let item of $checkboxCategory){
+
+            if (item.checked == true){
+               ajaxCategory.push($(item).data('category'))
+            }
+        }
+
+        var ajaxSubCategory = []
+
+        for (let item of $checkboxSubCategory){
+            if (item.checked == true){
+                ajaxSubCategory.push($(item).data('subcategory'))
+            }
+        }
+        console.log(ajaxSubCategory)
     });
 });*/

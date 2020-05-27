@@ -53,8 +53,10 @@
     <div class="map_title">
         <h1>Annuaire</h1>
     </div>
+
+    <span id="url_ajax" data-path="{{ path('ajax') }}"></span>
+
     <div class="container">
-        <span id="url_ajax" data-path="{{ path('ajax') }}"></span>
         <div class="list">
             <div class="item js-marker" {#{{ data.longitude }} {{ data.latitude }}#}>
                 <form action="{{ path('home') }}" method="POST">
@@ -76,12 +78,12 @@
                         <br>
                         <div style="color:#15A595;">
                             <label for="map_checkbox">{{ category.name }}</label>
-                            <input type="checkbox" class="map_checkbox_category" name="map_checkbox" checked data-category='{{ category.id }}'>
+                            <input type="checkbox" class="map_checkbox_category map_checkbox" name="map_checkbox" checked data-category='{{ category.id }}'>
                         </div>
                             {% for subCategory in category.subCategory %}
                                 <div style="color:#ED721D;">
                                     <label for="map_checkbox">{{ subCategory.name}}</label>
-                                    <input type="checkbox" class="map_checkbox_subCategory" name="map_checkbox" checked data-subCategory='{{ subCategory.id }}'>
+                                    <input type="checkbox" class="map_checkbox_subCategory map_checkbox" name="map_checkbox" checked data-subcategory='{{ subCategory.id }}'>
                                 </div>
                                     {% for actor in subCategory.actor  %}
                                         <div class='position{{ count }}' data-latitude='{{ actor.latitude }}' data-longitude='{{ actor.longitude }}'
