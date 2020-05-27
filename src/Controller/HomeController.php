@@ -101,10 +101,11 @@ class HomeController extends AbstractController
     /**
      * @Route("/ajax", name="ajax")
      */
-    public function ajax(CategoryRepository $categoryRepository, ActorRepository $actorRepository)
+    public function ajax(CategoryRepository $categoryRepository, ActorRepository $actorRepository,
+                         SubCategoryRepository $subCategoryRepository)
     {
         // every categories
-        $categories = $categoryRepository->findAll();
+        $subCategories = $subCategoryRepository->findAll();
         $actors = [];
         /*foreach($categories as $category){
             foreach($category->getSubCategory() as $subCategories){
@@ -118,18 +119,29 @@ class HomeController extends AbstractController
 
         // to manage selection with categorgies and subcategories
         if(isset($_POST['ajaxcategory'])){
-            $category = $_POST['ajaxcategory'];
-            $subcategory = $_POST['ajaxsubcategory'];
+            $postSubcategory = $_POST['ajaxsubcategory'];
+            $actorsDB = [];
 
-            foreach($category as $cat){
-                foreach($subcategory as $sub){
-                    $actorsDB = $actorRepository->findByCategory($cat, $sub);
+            foreach($subCategories as $sub){
+                foreach($postSubcategory as $post){
+                    if($sub->getId() == $post){
+                        foreach($sub->getActor() as $actor){
+                            $actorsDB[$actor->getName()] = [$actor->getLatitude(), $actor->getLongitude(),
+                                $actor->getDescription()];
+                        }
+                    }
                 }
             }
+
+            /*foreach($category as $cat){
+                foreach($cat->getSubCategory() as $sub){
+                    $actorsDB[] = $actorRepository->findByCategory($sub);
+                }
+            }*/
             $actors = [];
-            foreach($actorsDB as $actorDB){
-                $actors[$actorDB['name']] = [$actorDB['latitude'], $actorDB['longitude'],
-                    $actorDB['description']];
+            foreach($actorsDB as $key => $actorDB){
+                $actors[$key] = [$actorDB[0], $actorDB[1],
+                    $actorDB[2]];
             }
 
 
@@ -138,7 +150,7 @@ class HomeController extends AbstractController
 
         // ajax + return a JSON
         // get the lat and long from center view
-        /*if(isset($_POST['center'])){
+        if(isset($_POST['center'])){
             $center = $_POST['center'];
             $latMax = $center[0]+0.1;
             $latMin = $center[0]-0.1;
@@ -158,7 +170,7 @@ class HomeController extends AbstractController
 
         }else{
             $result = $actors;
-        }*/
+        }
 
 
 

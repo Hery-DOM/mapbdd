@@ -19,16 +19,11 @@ class ActorRepository extends ServiceEntityRepository
         parent::__construct($registry, Actor::class);
     }
 
-    public function findByCategory($cat, $sub)
+    public function findByCategory( $sub)
     {
         return $this->createQueryBuilder('a')
                     ->select('a')
                     ->leftJoin('a.subCategory', 's')
-                    ->addSelect('s')
-                    ->leftJoin('s.category','c')
-                    ->addSelect('c')
-                    ->where('c.id = :id')
-                    ->setParameter('id',$cat)
                     ->where('s.id = :id')
                     ->setParameter('id',$sub)
                     ->getQuery()
