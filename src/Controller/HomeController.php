@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Actor;
 use App\Form\ActorType;
+use App\Repository\ActorRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\SubCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -100,35 +101,68 @@ class HomeController extends AbstractController
     /**
      * @Route("/ajax", name="ajax")
      */
-    public function ajax(CategoryRepository $categoryRepository)
+    public function ajax(CategoryRepository $categoryRepository, ActorRepository $actorRepository)
     {
-        // ajax + return a JSON
-        // get the lat and long from center view
-        $center = $_POST['center'];
-        $latMax = $center[0]+0.1;
-        $latMin = $center[0]-0.1;
-        $lngMax = $center[1]+0.1;
-        $lngMin = $center[1]-0.1;
-        $result = [];
-
-        // every catgories
+        // every categories
         $categories = $categoryRepository->findAll();
-        foreach($categories as $category){
+        $actors = [];
+        /*foreach($categories as $category){
             foreach($category->getSubCategory() as $subCategories){
                 foreach($subCategories->getActor() as $actor){
-                    if($actor->getLatitude() < $latMax && $actor->getLatitude()> $latMin){
-                        if($actor->getLongitude()<$lngMax && $actor->getLongitude()>$lngMin){
-                            $result[$actor->getName()] = [$actor->getLatitude(), $actor->getLongitude(),
-                                $actor->getDescription()];
-                        }
-
-                    }
+                    $actors[$actor->getName()] = [$actor->getLatitude(), $actor->getLongitude(),
+                        $actor->getDescription()];
                 }
             }
-        }
+        }*/
 
-        //get the selector
-        //$selector = [];
+
+        // to manage selection with categorgies and subcategories
+        if(isset($_POST['ajaxcategory'])){
+            $category = $_POST['ajaxcategory'];
+            $subcategory = $_POST['ajaxsubcategory'];
+
+            foreach($category as $cat){
+                foreach($subcategory as $sub){
+                    $actorsDB = $actorRepository->findByCategory($cat, $sub);
+                }
+            }
+            $actors = [];
+            foreach($actorsDB as $actorDB){
+                $actors[$actorDB['name']] = [$actorDB['latitude'], $actorDB['longitude'],
+                    $actorDB['description']];
+            }
+
+
+        }
+        $result = $actors;
+
+        // ajax + return a JSON
+        // get the lat and long from center view
+        /*if(isset($_POST['center'])){
+            $center = $_POST['center'];
+            $latMax = $center[0]+0.1;
+            $latMin = $center[0]-0.1;
+            $lngMax = $center[1]+0.1;
+            $lngMin = $center[1]-0.1;
+            $result = [];
+
+            foreach($actors as $key => $actor){
+                if($actor[0] < $latMax && $actor[0] > $latMin){
+                    if($actor[1] <$lngMax && $actor[1] >$lngMin){
+                        $result[$key] = [$actor[0], $actor[1], $actor[2]];
+                    }
+
+                }
+            }
+
+
+        }else{
+            $result = $actors;
+        }*/
+
+
+
+
 
 
         return new Response(json_encode($result));
