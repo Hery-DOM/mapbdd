@@ -118,7 +118,7 @@ class HomeController extends AbstractController
 
 
         // to manage selection with categorgies and subcategories
-        if(isset($_POST['ajaxcategory'])){
+        if(isset($_POST['ajaxsubcategory'])){
             $postSubcategory = $_POST['ajaxsubcategory'];
             $actorsDB = [];
 
