@@ -270,6 +270,13 @@ class LeafletMap {
             var $checkboxSubCategory = document.getElementsByClassName('map_checkbox_subCategory')
 
 
+            var group = document.getElementsByClassName('marker')
+            /*intégrer fade dans while item.fade*/
+            while(group.length > 0){
+                for(let item of group){
+                    item.remove()
+                }
+            }
 
             var ajaxCategory = []
 
@@ -287,14 +294,16 @@ class LeafletMap {
                     ajaxSubCategory.push($(item).data('subcategory'))
                 }
             }
-            console.log(ajaxSubCategory)
+
+            var center = map.getCenter()
 
             $.ajax({
                 url:$('#url_ajax').data('path'),
                 type:'POST',
                 data:{
                     ajaxcategory: ajaxCategory,
-                    ajaxsubcategory: ajaxSubCategory
+                    ajaxsubcategory: ajaxSubCategory,
+                    center : center
                 },
                 dataType: 'JSON',
                 success: function (result) {
@@ -319,11 +328,21 @@ class LeafletMap {
 
             var center = map.getCenter()
 
+            var $checkboxSubCategory = document.getElementsByClassName('map_checkbox_subCategory')
+            var ajaxSubCategory =[]
+
+            for (let item of $checkboxSubCategory){
+                if (item.checked == true){
+                    ajaxSubCategory.push($(item).data('subcategory'))
+                }
+            }
+
             $.ajax({
                 url:$('#url_ajax').data('path'),
                 type:'POST',
                 data:{
-                    center: center
+                    center: center,
+                    ajaxsubcategory: ajaxSubCategory,
                 },
                 dataType: 'JSON',
                 success: function (result) {
